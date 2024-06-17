@@ -54,7 +54,7 @@
             const timestampsList = document.getElementById('timestamps-list');
             timestampsList.innerHTML = '';
 
-            timestamps.forEach(timestamp => {
+            timestamps.forEach((timestamp, index) => {
                 const li = document.createElement('li');
                 const span = document.createElement('span');
                 span.className = 'timestamp-link';
