@@ -46,7 +46,7 @@
             fetch(configUrl)
                 .then(response => response.json())
                 .then(data => {
-                    setupSceneButtons(data.Scenes);
+                    setupSceneButtons(data.scenes);
                 })
                 .catch(error => console.error('Error loading scenes:', error));
         }
