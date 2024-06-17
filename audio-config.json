@@ -2,12 +2,9 @@
     "audioFile": "01 28-Martyrdom w_JT Solo & Choir.mp3",
     "timestamps": [
         {
-            "time": 30,
+            "startTime": 30,
+	    "endTime": 99,
             "description": "0:30 Introduction"
-        },
-        {
-            "time": 105,
-            "description": "1:45 Chorus"
         }
     ]
 }
