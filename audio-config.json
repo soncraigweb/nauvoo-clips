@@ -3,8 +3,13 @@
     "timestamps": [
         {
             "startTime": 30,
-	    "endTime": 99,
-            "description": "0:30 Introduction"
+	    "endTime": 33,
+            "description": "Clip 1"
+        },
+	{
+            "startTime": 40,
+	    "endTime": 44,
+            "description": "Clip 2"
         }
     ]
 }
