@@ -17,6 +17,110 @@
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Audio Player with Timestamps</h1>
+
+        <audio id="audio-player" controls class="w-100 mb-4">
+            <source id="audio-source" src="" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+        <ul id="timestamps-list" class="list-unstyled"></ul>
+    </div>
+
+    <!-- Howler.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        let audioPlayer;
+        let currentAudio;
+
+        function loadAudioConfig(configUrl) {
+            fetch(configUrl)
+                .then(response => response.json())
+                .then(data => {
+                    setupAudioPlayer(data.audioFile);
+                    setupTimestamps(data.timestamps);
+                })
+                .catch(error => console.error('Error loading audio config:', error));
+        }
+
+        function setupAudioPlayer(audioFile) {
+            if (currentAudio) {
+                currentAudio.unload();
+            }
+
+            currentAudio = new Howl({
+                src: [audioFile],
+                html5: true,
+                onload: function() {
+                    audioPlayer.src = audioFile;
+                }
+            });
+
+            document.getElementById('audio-source').src = audioFile;
+            audioPlayer.load();
+        }
+
+        function setupTimestamps(timestamps) {
+            const timestampsList = document.getElementById('timestamps-list');
+            timestampsList.innerHTML = '';
+
+            timestamps.forEach((timestamp, index) => {
+                const li = document.createElement('li');
+                const span = document.createElement('span');
+                span.className = 'timestamp-link';
+                span.textContent = timestamp.description;
+                span.dataset.time = timestamp.time;
+
+                span.addEventListener('click', function() {
+                    if (currentAudio) {
+                        currentAudio.seek(span.dataset.time);
+                        currentAudio.play();
+                    }
+                });
+
+                li.appendChild(span);
+                timestampsList.appendChild(li);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            audioPlayer = document.getElementById('audio-player');
+            loadAudioConfig('audio-config.json');
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Player</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .timestamp-link {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Audio Player with Timestamps</h1>
         
         <div class="audio-section mb-4">
             <h2>Song 1 - "Title"</h2>
@@ -39,7 +143,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -59,3 +163,4 @@
     </script>
 </body>
 </html>
+ -->
