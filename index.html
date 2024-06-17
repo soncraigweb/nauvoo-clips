@@ -58,15 +58,15 @@
                 button.textContent = scene.scene;
                 button.className = 'btn btn-primary mr-2 mb-2';
                 button.addEventListener('click', function() {
-                    loadAudioAndTimestamps(scene.audioFile);
+                    loadScene(scene);
                 });
                 sceneButtons.appendChild(button);
             });
         }
 
-        function loadAudioAndTimestamps(audioFile) {
-            loadAudio(audioFile);
-            loadTimestamps(audioFile.replace(/\s/g, '_').replace('.mp3', '_timestamps.json')); // Assuming timestamp file naming convention
+        function loadScene(scene) {
+            loadAudio(scene.audioFile);
+            setupTimestamps(scene.timestamps);
         }
 
         function loadAudio(audioFile) {
@@ -74,15 +74,6 @@
             audioSource.src = audioFile;
             audioPlayer.load();
             audioPlayer.play(); // Auto-play when loading new audio
-        }
-
-        function loadTimestamps(timestampsFile) {
-            fetch(timestampsFile)
-                .then(response => response.json())
-                .then(data => {
-                    setupTimestamps(data.timestamps);
-                })
-                .catch(error => console.error('Error loading timestamps:', error));
         }
 
         function setupTimestamps(timestamps) {
@@ -106,7 +97,9 @@
 
                     if (!isNaN(endTime)) {
                         setTimeout(function() {
-                            audioPlayer.pause();
+                            if (audioPlayer.currentTime < endTime) {
+                                audioPlayer.pause();
+                            }
                         }, (endTime - startTime) * 1000); // Pause after (endTime - startTime) seconds
                     }
                 });
