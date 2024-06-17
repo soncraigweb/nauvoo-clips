@@ -59,11 +59,22 @@
                 const span = document.createElement('span');
                 span.className = 'timestamp-link';
                 span.textContent = timestamp.description;
-                span.dataset.time = timestamp.time;
+                span.dataset.startTime = timestamp.startTime;
+                span.dataset.endTime = timestamp.endTime;
 
                 span.addEventListener('click', function() {
-                    audioPlayer.currentTime = span.dataset.time;
-                    audioPlayer.play();
+                    const startTime = parseInt(span.dataset.startTime, 10);
+                    const endTime = parseInt(span.dataset.endTime, 10);
+                    if (!isNaN(startTime)) {
+                        audioPlayer.currentTime = startTime;
+                        audioPlayer.play();
+                    }
+
+                    if (!isNaN(endTime)) {
+                        setTimeout(function() {
+                            audioPlayer.pause();
+                        }, (endTime - startTime) * 1000); // Pause after (endTime - startTime) seconds
+                    }
                 });
 
                 li.appendChild(span);
