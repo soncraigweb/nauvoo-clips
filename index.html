@@ -4,25 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio Player</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .timestamp-link {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Audio Player with Timestamps</h1>
-    
-    <h2>Song 1 - "Title"</h2>
-    <audio controls>
-        <source src="01 28-Martyrdom w_JT Solo & Choir.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    <ul>
-        <li><a href="01 28-Martyrdom w_JT Solo & Choir.mp3#t=30">0:30 Introduction</a>: Description of the introduction.</li>
-        <li><a href="01 28-Martyrdom w_JT Solo & Choir.mp3#t=105">1:45 Chorus</a>: Description of the chorus.</li>
-    </ul>
+    <div class="container mt-5">
+        <h1 class="mb-4">Audio Player with Timestamps</h1>
+        
+        <div class="audio-section mb-4">
+            <h2>Song 1 - "Title"</h2>
+            <audio id="audio1" controls class="w-100">
+                <source src="01 28-Martyrdom w_JT Solo & Choir.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <ul class="list-unstyled mt-3">
+                <li><span class="timestamp-link" data-audio="audio1" data-time="30">0:30 Introduction</span>: Description of the introduction.</li>
+                <li><span class="timestamp-link" data-audio="audio1" data-time="105">1:45 Chorus</span>: Description of the chorus.</li>
+            </ul>
+        </div>
 
-    <h2>Song 2 - "Another Title"</h2>
-    <audio controls>
-        <source src="path_to_your_audio_file2.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+        <div class="audio-section">
+            <h2>Song 2 - "Another Title"</h2>
+            <audio id="audio2" controls class="w-100">
+                <source src="path_to_your_audio_file2.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
+    <script>
+        document.querySelectorAll('.timestamp-link').forEach(link => {
+            link.addEventListener('click', function() {
+                const audioId = this.getAttribute('data-audio');
+                const time = this.getAttribute('data-time');
+                const audio = document.getElementById(audioId);
+                if (audio) {
+                    audio.currentTime = time;
+                    audio.play();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
