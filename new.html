@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Player</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Audio Player</h1>
+        <div id="sceneButtons" class="btn-group mb-3" role="group" aria-label="Scenes"></div>
+        <div id="audioControls">
+            <audio id="audioPlayer" controls>
+                Your browser does not support the audio element.
+            </audio>
+            <div id="playPauseBtn" class="btn btn-primary" onclick="togglePlay()">
+                <span id="playIcon">&#9654;</span> <!-- Play icon -->
+                <span id="pauseIcon" style="display: none;">&#10074;&#10074;</span> <!-- Pause icon -->
+            </div>
+            <div id="progressBar" class="progress mt-2">
+                <div id="progressIndicator" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
