@@ -40,25 +40,29 @@ fetch('scenes.json')
         function playClip(startTime, endTime) {
             const audioPlayer = document.getElementById('audioPlayer');
             audioPlayer.currentTime = startTime;
-            audioPlayer.play();
+
+            // Clear any existing interval
+            clearInterval(audioPlayer.endCheckInterval);
+
+            // Set up interval to check if playback has reached endTime
+            audioPlayer.endCheckInterval = setInterval(() => {
+                if (audioPlayer.currentTime >= endTime) {
+                    audioPlayer.pause();
+                    clearInterval(audioPlayer.endCheckInterval);
+                }
+            }, 100);
 
             // Update progress bar
             const progressBar = document.getElementById('progressIndicator');
             const duration = endTime - startTime;
-            const interval = 100; // milliseconds
-            const endCheckInterval = setInterval(() => {
-                if (audioPlayer.currentTime >= endTime) {
-                    audioPlayer.pause();
-                    clearInterval(endCheckInterval);
-                    progressBar.style.width = '0%'; // Reset progress bar
-                }
-            }, interval);
-
             audioPlayer.ontimeupdate = () => {
                 const currentTime = audioPlayer.currentTime - startTime;
                 const progress = (currentTime / duration) * 100;
                 progressBar.style.width = `${progress}%`;
             };
+
+            // Play the audio
+            audioPlayer.play();
         }
 
         // Function to toggle play/pause
