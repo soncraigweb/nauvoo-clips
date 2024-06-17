@@ -45,6 +45,15 @@ fetch('scenes.json')
             // Update progress bar
             const progressBar = document.getElementById('progressIndicator');
             const duration = endTime - startTime;
+            const interval = 100; // milliseconds
+            const endCheckInterval = setInterval(() => {
+                if (audioPlayer.currentTime >= endTime) {
+                    audioPlayer.pause();
+                    clearInterval(endCheckInterval);
+                    progressBar.style.width = '0%'; // Reset progress bar
+                }
+            }, interval);
+
             audioPlayer.ontimeupdate = () => {
                 const currentTime = audioPlayer.currentTime - startTime;
                 const progress = (currentTime / duration) * 100;
