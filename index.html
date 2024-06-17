@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Player with Scenes</title>
+    <title>Audio Player with Scenes and Timestamps</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -11,12 +11,14 @@
             cursor: pointer;
             color: blue;
             text-decoration: underline;
+            display: block;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Audio Player with Scenes</h1>
+        <h1 class="mb-4">Audio Player with Scenes and Timestamps</h1>
 
         <div id="scene-buttons" class="mb-4">
             <!-- Scene buttons will be dynamically added here -->
@@ -27,7 +29,9 @@
             Your browser does not support the audio element.
         </audio>
 
-        <ul id="timestamps-list" class="list-unstyled"></ul>
+        <div id="timestamps-list" class="mb-4">
+            <!-- Timestamp links will be dynamically added here -->
+        </div>
     </div>
 
     <!-- Bootstrap JS and dependencies -->
@@ -54,10 +58,15 @@
                 button.textContent = scene.scene;
                 button.className = 'btn btn-primary mr-2 mb-2';
                 button.addEventListener('click', function() {
-                    loadAudio(scene.audioFile);
+                    loadAudioAndTimestamps(scene.audioFile);
                 });
                 sceneButtons.appendChild(button);
             });
+        }
+
+        function loadAudioAndTimestamps(audioFile) {
+            loadAudio(audioFile);
+            loadTimestamps(audioFile.replace(/\s/g, '_').replace('.mp3', '_timestamps.json')); // Assuming timestamp file naming convention
         }
 
         function loadAudio(audioFile) {
@@ -67,21 +76,29 @@
             audioPlayer.play(); // Auto-play when loading new audio
         }
 
+        function loadTimestamps(timestampsFile) {
+            fetch(timestampsFile)
+                .then(response => response.json())
+                .then(data => {
+                    setupTimestamps(data.timestamps);
+                })
+                .catch(error => console.error('Error loading timestamps:', error));
+        }
+
         function setupTimestamps(timestamps) {
             const timestampsList = document.getElementById('timestamps-list');
             timestampsList.innerHTML = '';
 
             timestamps.forEach((timestamp, index) => {
-                const li = document.createElement('li');
-                const span = document.createElement('span');
-                span.className = 'timestamp-link';
-                span.textContent = timestamp.description;
-                span.dataset.startTime = timestamp.startTime;
-                span.dataset.endTime = timestamp.endTime;
+                const button = document.createElement('button');
+                button.textContent = timestamp.description;
+                button.className = 'btn btn-link timestamp-link';
+                button.dataset.startTime = timestamp.startTime;
+                button.dataset.endTime = timestamp.endTime;
 
-                span.addEventListener('click', function() {
-                    const startTime = parseInt(span.dataset.startTime, 10);
-                    const endTime = parseInt(span.dataset.endTime, 10);
+                button.addEventListener('click', function() {
+                    const startTime = parseInt(button.dataset.startTime, 10);
+                    const endTime = parseInt(button.dataset.endTime, 10);
                     if (!isNaN(startTime)) {
                         audioPlayer.currentTime = startTime;
                         audioPlayer.play();
@@ -94,8 +111,7 @@
                     }
                 });
 
-                li.appendChild(span);
-                timestampsList.appendChild(li);
+                timestampsList.appendChild(button);
             });
         }
 
