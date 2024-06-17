@@ -2,11 +2,35 @@
     "Scenes": [
         {
             "audioFile": "01 28-Martyrdom w_JT Solo & Choir.mp3",
-            "scene": "Martyrdom"
+            "scene": "Martyrdom",
+            "timestamps": [
+                {
+                    "startTime": 30,
+                    "endTime": 33,
+                    "description": "Clip 1"
+                },
+                {
+                    "startTime": 40,
+                    "endTime": 44,
+                    "description": "Clip 2"
+                }
+            ]
         },
         {
             "audioFile": "file2.mp3",
-            "scene": "File Two"
+            "scene": "File Two",
+            "timestamps": [
+                {
+                    "startTime": 30,
+                    "endTime": 33,
+                    "description": "File Two, Clip 1"
+                },
+                {
+                    "startTime": 12,
+                    "endTime": 22,
+                    "description": "File Two, Clip 2"
+                }
+            ]
         }
     ]
 }
