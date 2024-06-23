@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sceneButtons.appendChild(button);
             });
 
-            let sound, currentClipEndTime, progressInterval;
+            let sound, currentClipEndTime, progressInterval, currentProgressBar;
 
             // Function to load scene and associated audio
             function loadScene(index) {
@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     html5: true,
                     onend: function() {
                         clearInterval(progressInterval);
+                        if (currentProgressBar) {
+                            currentProgressBar.style.width = '0%';
+                        }
                         updatePlayPauseIcon(true);
                     }
                 });
@@ -49,59 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     progressBar.className = 'progress-bar';
                     clipButton.appendChild(progressBar);
 
-                    clipButton.onclick = () => playClip(timestamp.startTime, timestamp.endTime, progressBar);
+                    clipButton.onclick = () => toggleClip(timestamp.startTime, timestamp.endTime, progressBar);
                     audioControls.appendChild(clipButton);
                 });
             }
 
-            // Function to play a specific clip
-            function playClip(startTime, endTime, progressBar) {
-                if (sound.playing()) {
-                    sound.stop();
-                }
-
-                currentClipEndTime = endTime;
-                sound.seek(startTime);
-                sound.play();
-
-                // Update progress bar
-                const duration = endTime - startTime;
-
-                clearInterval(progressInterval);
-                progressInterval = setInterval(() => {
-                    const currentTime = sound.seek();
-                    if (currentTime >= currentClipEndTime) {
-                        sound.stop();
-                        clearInterval(progressInterval);
-                        updatePlayPauseIcon(true);
-                    } else {
-                        const progress = ((currentTime - startTime) / duration) * 100;
-                        progressBar.style.width = `${progress}%`;
-                    }
-                }, 100);
-
-                updatePlayPauseIcon(false);
-            }
-
-            // Function to toggle play/pause
-            const playPauseBtn = document.getElementById('playPauseBtn');
-            playPauseBtn.onclick = () => {
-                if (sound.playing()) {
-                    sound.pause();
-                    updatePlayPauseIcon(true);
-                } else {
-                    sound.play();
-                    updatePlayPauseIcon(false);
-                }
-            };
-
-            function updatePlayPauseIcon(isPaused) {
-                if (isPaused) {
-                    playPauseBtn.classList.remove('playing');
-                } else {
-                    playPauseBtn.classList.add('playing');
-                }
-            }
-        })
-        .catch(error => console.error('Error fetching JSON:', error));
-});
+            // Function to toggle play/pause for a specific clip
+            function toggleClip(startTime, endTime, progressBar)​⬤
